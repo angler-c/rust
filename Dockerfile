@@ -12,7 +12,7 @@ URL_CONF=https://gist.githubusercontent.com/anonymous/cd6c00f9f82551d842a0b3cfd4
 SS_VERSION=`curl "https://github.com/shadowsocks/shadowsocks-libev/releases/latest" | sed -n 's/^.*tag\/\(.*\)".*/\1/p'` ;\
 cd /tmp ;\
 curl -sSL "https://github.com/shadowsocks/shadowsocks-libev/archive/${SS_VERSION}.tar.gz" | tar xz --strip 1 ;\
-./configure --prefix=/usr --disable-documentation ;
+./configure --prefix=/usr --disable-documentation ;\
 make install ;\
 runDeps="$(scanelf --needed --nobanner /usr/bin/ss-* | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' | xargs -r apk info --installed | sort -u)" ;\
 apk add --no-cache --virtual .run-deps $runDeps supervisor ;\
