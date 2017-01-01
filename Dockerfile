@@ -16,7 +16,7 @@ curl -sSL "https://github.com/shadowsocks/shadowsocks-libev/archive/${SS_VERSION
 make install ;\
 runDeps="$(scanelf --needed --nobanner /usr/bin/ss-* | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' | xargs -r apk info --installed | sort -u)" ;\
 apk add --no-cache --virtual .run-deps $runDeps supervisor ;\
-curl -sSL "https://github.com/xtaci/kcptun/releases/download/v$KCP_VER/kcptun-$KERNEL_TYPE-$KCP_VER.tar.gz" | tar -xf ;\
+curl -sSL "https://github.com/xtaci/kcptun/releases/download/v$KCP_VER/kcptun-$KERNEL_TYPE-$KCP_VER.tar.gz" | tar xz ;\
 curl -sSL "${URL_CONF}" -o /supervisord.conf ;\
 mv /tmp/server_`char=$KERNEL_TYPE && echo ${char//-/_}` /kt-server ;\
 apk del .build-deps ;\
