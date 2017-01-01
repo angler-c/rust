@@ -1,4 +1,4 @@
-FROM alpine:3.4
+FROM alpine
 
 ENV SS_PASSWD=GdcMCsmlpE.p7G9/GMlEYc7hn3K_6t7c KCPTUN_KEY=KlxauA1Fqxuc.S18N-YHqpp85Wy-9t/N \
 	MODE=titan KCP_PORT=2700 SS_PORT=8172 SS_METHOD=chacha20 KCP_METHOD=salsa20 \
