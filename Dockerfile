@@ -4,7 +4,7 @@ ENV SS_PASSWD=GdcMCsmlpE.p7G9/GMlEYc7hn3K_6t7c KCPTUN_KEY=KlxauA1Fqxuc.S18N-YHqp
 	MODE=titan KCP_PORT=2700 SS_PORT=8172 SS_METHOD=chacha20 KCP_METHOD=salsa20 \
 	MTU=1470 SNDWND=6400 RCVWND=3072 DSCP=56 PARITYSHARD=5 INTERVAL=13 KEEPALIVE=10 SOCKBUF=4194304 \
 	SS_TIMEOUT=30 SS_DNS1=8.8.8.8 SS_DNS2=8.8.4.4 \
-	KERNEL_TYPE=linux-amd64 KCP_VER=20161222
+	KERNEL_TYPE=linux-amd64 KCP_VER=20170120
 
 RUN apk add --update openssl ;\
 apk add --no-cache --virtual .build-deps build-base curl libtool linux-headers openssl-dev pcre-dev tar xmlto ;\
