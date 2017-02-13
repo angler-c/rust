@@ -1,7 +1,7 @@
 FROM alpine
 
 ENV SS_PASSWD=GdcMCsmlpE.p7G9/GMlEYc7hn3K_6t7c KCPTUN_KEY=KlxauA1Fqxuc.S18N-YHqpp85Wy-9t/N \
-	MODE=titan KCP_PORT=2700 SS_PORT=8172 SS_METHOD=chacha20 KCP_METHOD=salsa20 NOCOMP=false \
+	MODE=titan KCP_PORT=2700 SS_PORT=8172 SS_METHOD=chacha20 KCP_METHOD=salsa20 \
 	MTU=1470 SNDWND=6400 RCVWND=3072 DSCP=56 DATASHARD=10 PARITYSHARD=5 INTERVAL=13 KEEPALIVE=10 SOCKBUF=4194304 \
 	SS_TIMEOUT=20 SS_DNS1=8.8.8.8 SS_DNS2=8.8.4.4 \
 	KERNEL_TYPE=linux-amd64 KCP_VER=20170120
@@ -19,7 +19,6 @@ runDeps="$(scanelf --needed --nobanner /usr/bin/ss-* | awk '{ gsub(/,/, "\nso:",
 apk add --no-cache --virtual .run-deps $runDeps supervisor ;\
 curl -sSL "https://github.com/xtaci/kcptun/releases/download/v$KCP_VER/kcptun-$KERNEL_TYPE-$KCP_VER.tar.gz" | tar xz ;\
 curl -sSL "${URL_CONF}" -o /supervisord.conf ;\
-if [ ! -v $x3 ] ;then echo $x3 ;else : ;fi
 mv /tmp/server_`char=$KERNEL_TYPE && echo ${char//-/_}` /kt-server ;\
 apk del .build-deps ;\
 rm -rf /tmp/* /var/cache/apk/*
