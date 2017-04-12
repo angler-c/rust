@@ -1,0 +1,24 @@
+FROM alpine
+
+RUN set -ex \
+    && if [ $(wget -qO- ipinfo.io/country) == CN ]; then echo "http://mirrors.aliyun.com/alpine/latest-stable/main/" > /etc/apk/repositories ;fi \
+    && apk --update add --no-cache libsodium py-pip \
+    && pip --no-cache-dir install https://github.com/shadowsocksr/shadowsocksr/archive/manyuser.zip
+
+ENV SERVER_ADDR 0.0.0.0
+ENV SERVER_PORT 8080
+ENV PASSWORD=
+ENV METHOD chacha20
+ENV PROTOCOL auth_aes128_sha1
+ENV TIMEOUT 300
+ENV OBFS http_post_compatible
+
+ENTRYPOINT ["/usr/bin/ssserver"]
+CMD ssserver -s "$SERVER_ADDR" \
+             -p "$SERVER_PORT" \
+             -m "$METHOD"      \
+             -k "$PASSWORD"    \
+             -t "$TIMEOUT"     \
+             -O "$PROTOCOL"    \
+             -o "$OBFS"        \
+             --fast-open $OPTIONS
