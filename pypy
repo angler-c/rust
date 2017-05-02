@@ -4,7 +4,7 @@ RUN set -ex \
     && if [ $(wget -qO- ipinfo.io/country) == CN ]; then echo "http://mirrors.aliyun.com/alpine/latest-stable/main/" > /etc/apk/repositories ;fi \
     && apk --no-cache buildbase openssl-dev libsodium \
     && pypy -m pip install m2crypto \
-    && apk del buildbase openssl-dev \
+    && apk del buildbase openssl-dev ;rm /tmp/* /var/cache/apk/* \
     && pypy -m pip --no-cache-dir install https://github.com/shadowsocksr/shadowsocksr/archive/manyuser.zip
 
 ENV SERVER_ADDR 0.0.0.0
