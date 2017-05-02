@@ -14,7 +14,7 @@ ENV PROTOCOL auth_aes128_sha1
 ENV TIMEOUT 300
 ENV OBFS http_post_compatible
 
-ENTRYPOINT ["/usr/bin/ssserver"]
+ENTRYPOINT ["ssserver"]
 CMD ssserver -s "$SERVER_ADDR" \
              -p "$SERVER_PORT" \
              -m "$METHOD"      \
