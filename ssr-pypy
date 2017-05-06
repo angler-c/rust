@@ -1,6 +1,7 @@
 FROM jamiehewland/alpine-pypy:2-5.7.0-slim
 
 RUN set -ex \
+    && echo -e "nameserver 8.8.8.8\nnameserver 8.8.4.4" > /etc/resolv.conf \
     && if [ $(wget -qO- ipinfo.io/country) == CN ]; then echo "http://mirrors.aliyun.com/alpine/latest-stable/main/" > /etc/apk/repositories ;fi \
     && apk --update add --no-cache build-base openssl-dev libsodium \
     && pypy -m pip install m2crypto \
