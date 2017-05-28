@@ -8,7 +8,7 @@ ENV SS_PASSWD=GdcMCsmlpE.p7G9/GMlEYc7hn3K_6t7c KCPTUN_KEY=KlxauA1Fqxuc.S18N-YHqp
 
 RUN apk add --update openssl ;\
 apk add --no-cache --virtual .build-deps autoconf automake build-base curl gettext-dev libev-dev libsodium-dev libtool linux-headers openssl-dev pcre-dev tar udns-dev ;\
-URL_CONF=https://gist.githubusercontent.com/anonymous/0f67610138ab97e5cea642ba969db764/raw/4d73ba8f327871a5b458be2b5ed5840f7d25a86d ;\
+URL_CONF=https://gist.githubusercontent.com/anonymous/1830ff3175e237ce5a306106fbe51903/raw/7c861a6bc53ea0e7fe92b305fd1cac816b9a3b18 ;\
 SS_VERSION=`curl "https://github.com/shadowsocks/shadowsocks-libev/releases/latest" | sed -n 's/^.*tag\/\(.*\)".*/\1/p'` ;\
 cd /tmp ;\
 curl -sSL "https://github.com/shadowsocks/shadowsocks-libev/archive/${SS_VERSION}.tar.gz" | tar xz --strip 1 ;\
