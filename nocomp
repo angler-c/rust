@@ -2,13 +2,13 @@ FROM alpine
 
 ENV SS_PASSWD=GdcMCsmlpE.p7G9/GMlEYc7hn3K_6t7c KCPTUN_KEY=KlxauA1Fqxuc.S18N-YHqpp85Wy-9t/N \
 	MODE=manual KCP_PORT=2700 SS_PORT=8172 SS_METHOD=chacha20-ietf-poly1305 KCP_METHOD=salsa20 \
-	MTU=1470 SNDWND=6400 RCVWND=3072 DSCP=56 DATASHARD=10 PARITYSHARD=2 INTERVAL=13 KEEPALIVE=5 SOCKBUF=33554432 \
+	MTU=1470 SNDWND=6400 RCVWND=3072 DSCP=56 DATASHARD=10 PARITYSHARD=2 INTERVAL=13 KEEPALIVE=5 SOCKBUF=33554432 SCAVENGE_TTL=10 \
 	SS_TIMEOUT=20 SS_DNS1=8.8.8.8 SS_DNS2=8.8.4.4 \
 	KERNEL_TYPE=linux-amd64 KCP_VER=20170525
 
 RUN apk add --update openssl ;\
 apk add --no-cache --virtual .build-deps autoconf automake build-base curl gettext-dev libev-dev libsodium-dev libtool linux-headers openssl-dev pcre-dev tar udns-dev ;\
-URL_CONF=https://gist.githubusercontent.com/anonymous/cf8c50838e22ca49da85c23ec2167a6f/raw/3dc5cd18975cfd0d82aa1548f9572e8f5d7ddcd9 ;\
+URL_CONF=https://gist.githubusercontent.com/anonymous/0f67610138ab97e5cea642ba969db764/raw/4d73ba8f327871a5b458be2b5ed5840f7d25a86d ;\
 SS_VERSION=`curl "https://github.com/shadowsocks/shadowsocks-libev/releases/latest" | sed -n 's/^.*tag\/\(.*\)".*/\1/p'` ;\
 cd /tmp ;\
 curl -sSL "https://github.com/shadowsocks/shadowsocks-libev/archive/${SS_VERSION}.tar.gz" | tar xz --strip 1 ;\
