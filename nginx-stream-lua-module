@@ -1,0 +1,38 @@
+FROM alpine:latest
+
+ENV NGINX_VERSION=1.12.0
+ENV STREAM_LUA_MODULE_VERSION=master
+ENV STREAM_ECHO_MODULE_VERSION=master
+
+ENV LUAJIT_LIB=/usr/lib
+ENV LUAJIT_INC=/usr/include/luajit-2.0
+
+RUN \
+  apk --no-cache add --virtual makedepends build-base linux-headers openssl-dev pcre-dev curl zlib-dev luajit-dev && \
+  apk --no-cache add ca-certificates openssl pcre zlib luajit && \
+  cd /tmp && \
+  curl -sL http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz | tar xvz && \
+  curl -sL https://github.com/openresty/stream-lua-nginx-module/archive/master.tar.gz | tar xvz && \
+  curl -sL https://github.com/openresty/stream-echo-nginx-module/archive/master.tar.gz | tar xvz && \
+  cd /tmp/nginx-${NGINX_VERSION} && \
+  ./configure \
+    --with-cc-opt="-Wno-error" \
+    --prefix=/etc/nginx \
+    --sbin-path=/usr/sbin/nginx \
+    --conf-path=/etc/nginx/nginx.conf \
+    --error-log-path=/var/log/nginx/error.log \
+    --pid-path=/var/run/nginx.pid \
+    --lock-path=/var/run/nginx.lock \
+    --user=nginx \
+    --group=nginx \
+    --with-file-aio \
+    --with-ipv6 \
+    --with-threads \
+    --with-stream \
+    && \
+  make install && \
+  adduser -s /sbin/nologin -D -H nginx && \
+  rm -rf /tmp/* && \  
+  apk del makedepends
+  
+CMD ["nginx", "-g", "daemon off;"]
