@@ -1,0 +1,53 @@
+FROM alpine
+
+RUN set -ex \
+    && apk add --no-cache --virtual .build-deps autoconf automake build-base libev-dev libtool linux-headers pcre-dev udns-dev libsodium-dev mbedtls-dev tar git \
+	
+    && mkdir -p /tmp/ss && cd /tmp/ss \
+    && git clone https://github.com/shadowsocks/shadowsocks-libev.git \
+    && cd shadowsocks-libev \
+    && git submodule update --init --recursive \
+	
+        # Installation of simple-obfs
+        && git clone https://github.com/shadowsocks/simple-obfs.git \
+        && cd simple-obfs \
+        && git submodule update --init --recursive \
+        && ./autogen.sh && ./configure --disable-documentation && make \
+        && make install \
+        && cd /tmp/ss/shadowsocks-libev \
+
+        # Start building
+        && ./autogen.sh && ./configure --disable-documentation && make install \
+        && ssRunDeps="$( \
+		scanelf --needed --nobanner /usr/local/bin/ss-server \
+		| awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
+		| xargs -r apk info --installed \
+		| sort -u \
+		)" \
+        && apk add --no-cache --virtual .ss-rundeps $ssRunDeps \
+
+    # Clean
+    && apk del .build-deps \
+    && rm -rf /tmp/ss /var/cache/apk/* 
+	
+ENV SERVER_PORT 8388
+ENV PASSWORD shadowsocks
+ENV METHOD chacha20-ietf-poly1305
+ENV TIMEOUT 60
+ENV DNS_ADDR1 8.8.8.8
+ENV DNS_ADDR2 8.8.4.4
+ENV PLUGIN obfs-server
+ENV PLUGIN_OPTS "obfs=http;failover=admin.ch"
+
+CMD ss-server -s "0.0.0.0" \
+                     -p "SERVER_$PORT" \
+                     -k "$PASSWORD" \
+                     -m "$METHOD" \
+                     -t "$TIMEOUT" \
+                     -d "$DNS_ADDR1" \
+                     -d "$DNS_ADDR2" \
+                     --plugin "$PLUGIN" \
+                     --plugin-opts "$PLUGIN_OPTS" \
+                     -u \
+                     --fast-open \
+                     --reuse-port > /dev/null 2>&1
